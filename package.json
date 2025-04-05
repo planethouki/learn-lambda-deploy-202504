@@ -1,15 +1,19 @@
 {
   "name": "lambda-learn",
   "version": "1.0.0",
-  "description": "",
+  "description": "AWS Lambda関数のサンプルプロジェクト",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "serverless deploy",
+    "deploy:function": "serverless deploy function",
+    "remove": "serverless remove"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "serverless": "^4.11.1"
+    "serverless": "^4.11.1",
+    "serverless-python-requirements": "^6.1.2"
   }
 }

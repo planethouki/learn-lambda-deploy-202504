@@ -1,0 +1,52 @@
+service: lambda-learn
+
+frameworkVersion: '3'
+
+plugins:
+  - serverless-python-requirements
+
+provider:
+  name: aws
+  runtime: python3.11
+  region: ap-northeast-1 # 東京リージョン
+
+functions:
+  hello:
+    handler: functions/hello.handler
+    description: 'Hello関数'
+    events:
+      - httpApi:
+          path: /hello
+          method: get
+
+  hoge:
+    handler: functions/hoge.handler
+    description: 'Hoge関数'
+    events:
+      - httpApi:
+          path: /hoge
+          method: get
+
+  fuga:
+    handler: functions/fuga.handler
+    description: 'Fuga関数'
+    events:
+      - httpApi:
+          path: /fuga
+          method: get
+
+package:
+  individually: true
+  patterns:
+    - '!node_modules/**'
+    - '!.gitignore'
+    - '!.git/**'
+    - '!package.json'
+    - '!package-lock.json'
+    - '!README.md'
+
+custom:
+  pythonRequirements:
+    dockerizePip: false  # Dockerを使用しない場合はfalse
+    zip: true
+    slim: true  # 不要なファイルを除外してパッケージサイズを削減
