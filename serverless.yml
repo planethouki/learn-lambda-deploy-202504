@@ -1,6 +1,9 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: planethouki
+# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
+app: lambda-learn
 service: lambda-learn
 
-frameworkVersion: '3'
 
 plugins:
   - serverless-python-requirements
