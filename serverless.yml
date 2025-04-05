@@ -4,7 +4,6 @@ org: planethouki
 app: lambda-learn
 service: lambda-learn
 
-
 plugins:
   - serverless-python-requirements
 
@@ -17,26 +16,14 @@ functions:
   hello:
     handler: functions/hello.handler
     description: 'Hello関数'
-    events:
-      - httpApi:
-          path: /hello
-          method: get
 
   hoge:
     handler: functions/hoge.handler
     description: 'Hoge関数'
-    events:
-      - httpApi:
-          path: /hoge
-          method: get
 
   fuga:
     handler: functions/fuga.handler
     description: 'Fuga関数'
-    events:
-      - httpApi:
-          path: /fuga
-          method: get
 
 package:
   individually: true
