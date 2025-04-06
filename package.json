@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "deploy": "serverless deploy",
     "deploy:function": "serverless deploy function",
-    "remove": "serverless remove"
+    "remove": "serverless remove",
+    "invoke:hoge": "serverless invoke -f hoge"
   },
   "keywords": [],
   "author": "",
