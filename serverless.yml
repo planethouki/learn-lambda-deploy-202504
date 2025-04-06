@@ -4,9 +4,6 @@ org: planethouki
 app: lambda-learn
 service: lambda-learn
 
-plugins:
-  - serverless-python-requirements
-
 provider:
   name: aws
   # ECRリポジトリの設定
@@ -15,7 +12,6 @@ provider:
     images:
       lambda-image:
         path: ./
-        platform: linux/amd64
   region: ap-northeast-1 # 東京リージョン
   environment:
     SYMBOL_PRIVATE_KEY: ${env:SYMBOL_PRIVATE_KEY, ''}
