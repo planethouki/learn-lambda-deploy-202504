@@ -14,18 +14,8 @@ def handler(event, context):
     Symbol SDKを使用してトランザクションを生成、送信します
     """
     try:
-        # リクエストパラメータの取得
-        body = {}
-        if event.get('body'):
-            body = json.loads(event['body'])
-        
-        # パラメータの取得
-        recipient_address = body.get('recipient_address')
-        message = body.get('message')
-        amount = int(body.get('amount')) if body.get('amount') else None
-        
         # トランザクション処理の実行
-        result = process_transaction(recipient_address, message, amount)
+        result = process_transaction()
         
         # レスポンスの作成
         if result['success']:

@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import time
 from dotenv import load_dotenv
 from symbolchain.CryptoTypes import PrivateKey
 from symbolchain.symbol.KeyPair import KeyPair
@@ -31,6 +32,10 @@ def load_environment():
         raise ValueError("SYMBOL_PRIVATE_KEYが設定されていません")
     if not symbol_node_url:
         raise ValueError("SYMBOL_NODE_URLが設定されていません")
+    if not symbol_recipient_address:
+        raise ValueError("SYMBOL_RECIPIENT_ADDRESSが設定されていません")
+    if not symbol_mosaic_id:
+        raise ValueError("SYMBOL_MOSAIC_IDが設定されていないか、不正な値です")
     
     return {
         'private_key': symbol_private_key,
@@ -124,20 +129,17 @@ def announce_transaction(config, transaction_data):
     
     return result
 
-def process_transaction(recipient_address=None, message=None, amount=None):
+def process_transaction():
     """トランザクションの処理を行う関数"""
     try:
         # 環境変数の読み込み
         config = load_environment()
         
-        # デフォルト値の設定
-        recipient_address = recipient_address or config['recipient_address']
-        message = message or 'Symbolトランザクションのテストメッセージ'
-        amount = amount or 1000  # マイクロXYM単位（1 XYM = 1,000,000 マイクロXYM）
-        
-        # 送信先アドレスが設定されていない場合はエラー
-        if not recipient_address:
-            raise ValueError("送信先アドレスが設定されていません")
+        recipient_address = config['recipient_address']
+        fixed_message = 'Symbolトランザクションのテストメッセージ'
+        unixtime = int(time.time())
+        message = f"{unixtime} {fixed_message}"
+        amount = 1000
         
         # トランザクションの作成と署名
         transaction_data = create_transaction(config, recipient_address, message, amount)
