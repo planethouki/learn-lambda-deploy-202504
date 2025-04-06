@@ -1,2 +1,3 @@
 # Python依存関係
-# 現在は標準ライブラリのみを使用しているため、依存関係はありません
+symbol-sdk-python==3.1.0
+python-dotenv==1.0.0

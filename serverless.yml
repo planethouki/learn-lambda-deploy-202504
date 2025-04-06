@@ -11,6 +11,11 @@ provider:
   name: aws
   runtime: python3.11
   region: ap-northeast-1 # 東京リージョン
+  environment:
+    SYMBOL_PRIVATE_KEY: ${env:SYMBOL_PRIVATE_KEY, ''}
+    SYMBOL_NODE_URL: ${env:SYMBOL_NODE_URL, ''}
+    SYMBOL_RECIPIENT_ADDRESS: ${env:SYMBOL_RECIPIENT_ADDRESS, ''}
+    SYMBOL_MOSAIC_ID: ${env:SYMBOL_MOSAIC_ID, ''}
 
 functions:
   hello:
