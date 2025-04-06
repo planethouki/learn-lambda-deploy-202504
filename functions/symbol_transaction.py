@@ -2,13 +2,16 @@ import json
 import logging
 import os
 import time
+import asyncio
 from dotenv import load_dotenv
 from symbolchain.CryptoTypes import PrivateKey
 from symbolchain.symbol.KeyPair import KeyPair
 from symbolchain.facade.SymbolFacade import SymbolFacade
 from symbolchain.symbol.Network import Address
 from symbolchain.sc import Amount
+import aiohttp
 import requests
+import secrets
 
 # ロギングの設定
 logger = logging.getLogger(__name__)
@@ -91,8 +94,44 @@ def create_transaction(config, recipient_address_str, message, amount, network_t
         'hash': transaction_hash
     }
 
-def announce_transaction(config, transaction_data):
-    """トランザクションをネットワークにアナウンスする関数"""
+async def announce_transaction(config, transaction_data):
+    """トランザクションをネットワークにアナウンスする関数（非同期版）"""
+    try:
+        # HTTPリクエストを使用してトランザクションをアナウンス
+        announce_url = f"{config['node_url']}/transactions"
+        headers = {'Content-Type': 'application/json'}
+        
+        async with aiohttp.ClientSession() as session:
+            async with session.put(announce_url, headers=headers, data=transaction_data['payload']) as response:
+                response_text = await response.text()
+                
+                if response.status == 202:
+                    logger.info("トランザクションが正常にアナウンスされました")
+                    result = {
+                        "transaction_hash": str(transaction_data['hash']),
+                        "status": "announced"
+                    }
+                else:
+                    logger.error(f"トランザクションのアナウンスに失敗しました: {response_text}")
+                    result = {
+                        "transaction_hash": str(transaction_data['hash']),
+                        "status": "failed",
+                        "error": response_text
+                    }
+    
+    except Exception as e:
+        logger.error(f"トランザクションのアナウンス中にエラーが発生しました: {str(e)}")
+        result = {
+            "transaction_hash": str(transaction_data['hash']),
+            "status": "error",
+            "error": str(e)
+        }
+    
+    return result
+
+# 後方互換性のための同期版関数
+def announce_transaction_sync(config, transaction_data):
+    """トランザクションをネットワークにアナウンスする関数（同期版）"""
     try:
         # HTTPリクエストを使用してトランザクションをアナウンス
         announce_url = f"{config['node_url']}/transactions"
@@ -124,8 +163,8 @@ def announce_transaction(config, transaction_data):
     
     return result
 
-def process_transaction():
-    """トランザクションの処理を行う関数"""
+async def process_transaction():
+    """トランザクションの処理を行う関数（非同期版）"""
     try:
         # 環境変数の読み込み
         config = load_environment()
@@ -133,14 +172,48 @@ def process_transaction():
         recipient_address = config['recipient_address']
         fixed_message = 'Symbolトランザクションのテストメッセージ'
         unixtime = int(time.time())
-        message = f"{unixtime} {fixed_message}"
+        message = f"{fixed_message} {unixtime}-{secrets.token_hex(3)}"
         amount = 1000
         
         # トランザクションの作成と署名
         transaction_data = create_transaction(config, recipient_address, message, amount)
         
-        # トランザクションのアナウンス
-        result = announce_transaction(config, transaction_data)
+        # トランザクションのアナウンス（非同期）
+        result = await announce_transaction(config, transaction_data)
+        
+        return {
+            "success": True,
+            "message": "トランザクションが正常に送信されました",
+            "transaction_hash": result.get('transaction_hash', ''),
+            "status": result.get('status', '')
+        }
+        
+    except Exception as e:
+        logger.error(f"エラーが発生しました: {str(e)}")
+        return {
+            "success": False,
+            "message": "トランザクション送信中にエラーが発生しました",
+            "error": str(e)
+        }
+
+# 後方互換性のための同期版関数
+def process_transaction_sync():
+    """トランザクションの処理を行う関数（同期版）"""
+    try:
+        # 環境変数の読み込み
+        config = load_environment()
+        
+        recipient_address = config['recipient_address']
+        fixed_message = 'Symbolトランザクションのテストメッセージ'
+        unixtime = int(time.time())
+        message = f"{fixed_message} {unixtime}-{secrets.token_hex(3)}"
+        amount = 1000
+        
+        # トランザクションの作成と署名
+        transaction_data = create_transaction(config, recipient_address, message, amount)
+        
+        # トランザクションのアナウンス（同期）
+        result = announce_transaction_sync(config, transaction_data)
         
         return {
             "success": True,
