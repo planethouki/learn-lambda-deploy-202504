@@ -6,10 +6,9 @@ from dotenv import load_dotenv
 from symbolchain.CryptoTypes import PrivateKey
 from symbolchain.symbol.KeyPair import KeyPair
 from symbolchain.facade.SymbolFacade import SymbolFacade
-from symbolchain.symbol.TransactionFactory import TransactionFactory
 from symbolchain.symbol.Network import Address
-import requests
 from symbolchain.sc import Amount
+import requests
 
 # ロギングの設定
 logger = logging.getLogger(__name__)
