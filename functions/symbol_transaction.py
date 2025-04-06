@@ -48,17 +48,11 @@ def create_transaction(config, recipient_address_str, message, amount, network_t
     """トランザクションを作成して署名する関数"""
     # 送信先アドレスの変換
     recipient_address = Address(recipient_address_str)
-
-    network_time = requests.get(f"{config['node_url']}/node/time").json()
-    receive_timestamp: int = int(
-        network_time["communicationTimestamps"]["receiveTimestamp"]
-    )
-    deadline_timestamp: int = receive_timestamp + (
-        2 * 60 * 60 * 1000
-    )  # 2時間後（ミリ秒単位）
     
     # Symbolファサードの作成
     sym_facade = SymbolFacade(network_type)
+
+    deadline_timestamp: int = sym_facade.now().add_hours(2).timestamp
     
     # 秘密鍵からキーペアを生成
     key_pair = KeyPair(PrivateKey(config['private_key']))
