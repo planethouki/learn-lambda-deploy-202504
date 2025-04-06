@@ -38,3 +38,8 @@ package:
     - '!package.json'
     - '!package-lock.json'
     - '!README.md'
+    - '!.env'
+    - '!.venv/**'
+    - '!__pycache__/**'
+    - '!.pytest_cache/**'
+    - '!*.pyc'
