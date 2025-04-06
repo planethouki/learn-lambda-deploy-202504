@@ -3,17 +3,17 @@ import datetime
 import os
 import logging
 from dotenv import load_dotenv
-from symbolchain.core.CryptoTypes import PrivateKey
-from symbolchain.core.sym.KeyPair import KeyPair
-from symbolchain.core.sym.Network import NetworkType
-from symbolchain.core.facade.SymFacade import SymFacade
-from symbolchain.core.sym.TransactionFactory import TransactionFactory
-from symbolchain.core.sym.IdGenerator import generate_mosaic_id
-from symbolchain.core.sym.MosaicNonce import MosaicNonce
-from symbolchain.core.sym.TransactionDescriptor import TransactionDescriptor
-from symbolchain.core.sym.TransferTransaction import TransferTransaction
-from symbolchain.core.sym.MessageEncoder import PlainMessage
-from symbolchain.core.sym.Network import Address
+from symbolchain.CryptoTypes import PrivateKey
+from symbolchain.symbol.KeyPair import KeyPair
+from symbolchain.symbol.Network import NetworkType
+from symbolchain.facade.SymFacade import SymFacade
+from symbolchain.symbol.TransactionFactory import TransactionFactory
+from symbolchain.symbol.IdGenerator import generate_mosaic_id
+from symbolchain.symbol.MosaicNonce import MosaicNonce
+from symbolchain.symbol.TransactionDescriptor import TransactionDescriptor
+from symbolchain.symbol.TransferTransaction import TransferTransaction
+from symbolchain.symbol.MessageEncoder import PlainMessage
+from symbolchain.symbol.Network import Address
 
 # ロギングの設定
 logger = logging.getLogger()
