@@ -31,7 +31,6 @@ functions:
     description: 'Fuga関数'
 
 package:
-  individually: true
   patterns:
     - '!node_modules/**'
     - '!.gitignore'
@@ -39,9 +38,3 @@ package:
     - '!package.json'
     - '!package-lock.json'
     - '!README.md'
-
-custom:
-  pythonRequirements:
-    dockerizePip: false  # Dockerを使用しない場合はfalse
-    zip: true
-    slim: true  # 不要なファイルを除外してパッケージサイズを削減
