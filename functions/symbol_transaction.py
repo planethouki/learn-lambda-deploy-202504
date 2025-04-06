@@ -9,6 +9,7 @@ from symbolchain.facade.SymbolFacade import SymbolFacade
 from symbolchain.symbol.TransactionFactory import TransactionFactory
 from symbolchain.symbol.Network import Address
 import requests
+from symbolchain.sc import Amount
 
 # ロギングの設定
 logger = logging.getLogger(__name__)
@@ -74,8 +75,9 @@ def create_transaction(config, recipient_address_str, message, amount, network_t
         'mosaics': [{'mosaic_id': config['mosaic_id'], 'amount': amount}],
         'message': bytes(1) + message.encode('utf8'),
         "deadline": deadline_timestamp,
-        'fee': 30000,
     })
+
+    transaction.fee = Amount(100 * transaction.size)
     
     # トランザクションの署名
     signature = sym_facade.sign_transaction(key_pair, transaction)
